@@ -6,9 +6,9 @@ on:
       - "master"
 jobs:
   build:
-    name: Package & Deploy
+    name: Deploy to CDK
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 10
     steps:
       # Uses checkout@v2 to checkout the current repo
       - uses: actions/checkout@v2
@@ -36,8 +36,7 @@ jobs:
           aws-region: ${{ secrets.DEV_AWS_REGION }}
       - name: Deploy CDK in dev
         run: |
-          cd deployment
           export CDK_DEPLOY_ACCOUNT=${{ secrets.DEV_AWS_TARGET_ACCOUNT }}
           export CDK_DEPLOY_REGION=${{ secrets.DEV_AWS_REGION }}
           npm install
-          cdk deploy auth-service-dev -c env=dev --require-approval never
+          cdk deploy ecrjanitor-dev -c env=dev --require-approval never
